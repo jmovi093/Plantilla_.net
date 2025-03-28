@@ -7,7 +7,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: light;
   color: rgba(0, 0, 0, 0.87);
   background-color: #f4f4f4;
 
@@ -15,6 +15,40 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Estilos base para elementos de formulario */
+input,
+textarea,
+select {
+  color: #000;
+  background-color: #fff;
+}
+
+/* Estilos específicos para inputs para asegurar consistencia */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.5);
 }
 
 a {
@@ -30,6 +64,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #f4f4f4;
 }
 
 h1 {
@@ -56,6 +91,18 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Clases utilitarias adicionales */
+.bg-white {
+  background-color: #fff;
+}
+.text-gray-700 {
+  color: #374151;
+}
+.border {
+  border-color: #e5e7eb;
+}
+
+/* Media queries para modo claro (aseguran consistencia) */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

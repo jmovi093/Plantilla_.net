@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Truck, 
-  Tags, 
-  Package, 
+  BookOpen, 
+  UserCheck, 
+  Award, 
   Users, 
-  ShoppingCart 
+  CheckCircle 
 } from 'lucide-react';
+import { empleadoService } from '../services/EmpleadoService';
 
 const DashboardCard: React.FC<{
   title: string, 
-  value: number, 
+  value: number | string, 
   icon: React.ReactNode, 
   color: string
 }> = ({ title, value, icon, color }) => (
   <div className={`${color} rounded-lg shadow-md p-6 flex flex-col items-center transition-transform duration-200 hover:scale-105`}>
-    <div className="text-3xl mb-4">
+    <div className="mb-4 text-3xl">
       {icon}
     </div>
     <div className="text-center">
-      <h3 className="text-lg font-medium mb-1">
+      <h3 className="mb-1 text-lg font-medium">
         {title}
       </h3>
       <p className="text-2xl font-bold">
@@ -30,62 +31,84 @@ const DashboardCard: React.FC<{
 
 const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [empleados, setEmpleados] = useState<number>(0);
   
-  // Simular carga de datos
+  // Fetch empleados data
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
+    const fetchEmpleados = async () => {
+      try {
+        const data = await empleadoService.getAll();
+        setEmpleados(data.length);
+      } catch (error) {
+        console.error("Error fetching empleados:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     
-    return () => clearTimeout(timer);
+    fetchEmpleados();
   }, []);
-
-  // Estos serían datos que normalmente vendrían de una API
+  
+  // Quiz information
+  const studentInfo = {
+    nombre: "Josue Montero Villalobos",
+    profesor: "Juan Pablo Ramos",
+    curso: "FUNDAMENTOS PROGRAMACION WEB",
+    nrc: "41663",
+    quizNum: "Quiz #1"
+  };
+  
+  // Dashboard cards data
   const dashboardData = [
     {
-      title: 'Transportistas',
-      value: 15,
-      icon: <Truck size={32} />,
+      title: 'Curso',
+      value: studentInfo.curso,
+      icon: <BookOpen size={32} />,
       color: 'bg-blue-100 text-blue-800'
     },
     {
-      title: 'Categorías',
-      value: 8,
-      icon: <Tags size={32} />,
+      title: 'Profesor',
+      value: studentInfo.profesor,
+      icon: <UserCheck size={32} />,
       color: 'bg-green-100 text-green-800'
     },
     {
-      title: 'Productos',
-      value: 77,
-      icon: <Package size={32} />,
+      title: 'NRC',
+      value: studentInfo.nrc,
+      icon: <Award size={32} />,
       color: 'bg-purple-100 text-purple-800'
     },
     {
-      title: 'Clientes',
-      value: 45,
+      title: 'Empleados',
+      value: empleados,
       icon: <Users size={32} />,
       color: 'bg-orange-100 text-orange-800'
     },
     {
-      title: 'Pedidos',
-      value: 256,
-      icon: <ShoppingCart size={32} />,
+      title: 'Evaluación',
+      value: studentInfo.quizNum,
+      icon: <CheckCircle size={32} />,
       color: 'bg-red-100 text-red-800'
     }
   ];
 
   return (
-    <div className="py-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">
-        Dashboard
-      </h1>
+    <div className="px-4 py-6">
+      <div className="p-8 mb-8 shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl">
+        <h1 className="mb-2 text-4xl font-bold text-white">
+          {studentInfo.nombre}
+        </h1>
+        <p className="text-xl text-white opacity-80">
+          {studentInfo.curso} - {studentInfo.quizNum}
+        </p>
+      </div>
       
       {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+        <div className="flex items-center justify-center h-64">
+          <div className="w-12 h-12 border-b-2 border-indigo-500 rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {dashboardData.map((card, index) => (
             <DashboardCard 
               key={index}
@@ -98,12 +121,12 @@ const Dashboard: React.FC = () => {
         </div>
       )}
       
-      <div className="mt-12 bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Resumen de Actividad</h2>
+      <div className="p-6 mt-12 bg-white rounded-lg shadow-md">
+        <h2 className="mb-4 text-xl font-semibold text-gray-800">Información del Sistema</h2>
         <div className="text-gray-600">
-          <p className="mb-2">• El sistema ha registrado un total de <strong>{dashboardData.reduce((acc, curr) => acc + curr.value, 0)}</strong> entidades.</p>
-          <p className="mb-2">• Los pedidos representan <strong>{Math.round((256 / dashboardData.reduce((acc, curr) => acc + curr.value, 0)) * 100)}%</strong> del total de registros.</p>
-          <p className="mb-2">• Ratio productos/categorías: <strong>{Math.round(77 / 8 * 10) / 10}</strong> productos por categoría.</p>
+          <p className="mb-2">• Total de empleados registrados: <strong>{empleados}</strong></p>
+          <p className="mb-2">• Curso: <strong>{studentInfo.curso}</strong></p>
+          <p className="mb-2">• NRC: <strong>{studentInfo.nrc}</strong></p>
         </div>
       </div>
     </div>
