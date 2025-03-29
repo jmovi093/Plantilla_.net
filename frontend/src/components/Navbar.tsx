@@ -129,8 +129,14 @@ const Navbar: React.FC = () => {
             }`}
             onClick={() => setIsOpen(false)}
           >
+<<<<<<< HEAD
             Empleados
           </Link>
+=======
+            Transportistas
+          </Link>
+
+>>>>>>> 29e8005a8ab07ab72a2498e3952cda79db6cf2c1
         </div>
       </div>
     </nav>
