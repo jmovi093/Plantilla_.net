@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  BookOpen, 
-  UserCheck, 
-  Award, 
-  Users, 
-  CheckCircle 
+import {
+  BookOpen,
+  UserCheck,
+  Award,
+  Users,
+  CheckCircle
 } from 'lucide-react';
-import { empleadoService } from '../services/EmpleadoService';
+import { cultureService } from '../services/CultureService';
 
 const DashboardCard: React.FC<{
-  title: string, 
-  value: number | string, 
-  icon: React.ReactNode, 
+  title: string,
+  value: number | string,
+  icon: React.ReactNode,
   color: string
 }> = ({ title, value, icon, color }) => (
   <div className={`${color} rounded-lg shadow-md p-6 flex flex-col items-center transition-transform duration-200 hover:scale-105`}>
@@ -32,12 +32,12 @@ const DashboardCard: React.FC<{
 const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [empleados, setEmpleados] = useState<number>(0);
-  
+
   // Fetch empleados data
   useEffect(() => {
     const fetchEmpleados = async () => {
       try {
-        const data = await empleadoService.getAll();
+        const data = await cultureService.getAll();
         setEmpleados(data.length);
       } catch (error) {
         console.error("Error fetching empleados:", error);
@@ -45,10 +45,10 @@ const Dashboard: React.FC = () => {
         setIsLoading(false);
       }
     };
-    
+
     fetchEmpleados();
   }, []);
-  
+
   // Quiz information
   const studentInfo = {
     nombre: "Josue Montero Villalobos",
@@ -57,7 +57,7 @@ const Dashboard: React.FC = () => {
     nrc: "41663",
     quizNum: "Quiz #1"
   };
-  
+
   // Dashboard cards data
   const dashboardData = [
     {
@@ -102,7 +102,7 @@ const Dashboard: React.FC = () => {
           {studentInfo.curso} - {studentInfo.quizNum}
         </p>
       </div>
-      
+
       {isLoading ? (
         <div className="flex items-center justify-center h-64">
           <div className="w-12 h-12 border-b-2 border-indigo-500 rounded-full animate-spin"></div>
@@ -110,7 +110,7 @@ const Dashboard: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {dashboardData.map((card, index) => (
-            <DashboardCard 
+            <DashboardCard
               key={index}
               title={card.title}
               value={card.value}
@@ -120,7 +120,7 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
       )}
-      
+
       <div className="p-6 mt-12 bg-white rounded-lg shadow-md">
         <h2 className="mb-4 text-xl font-semibold text-gray-800">Información del Sistema</h2>
         <div className="text-gray-600">

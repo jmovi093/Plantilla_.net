@@ -60,7 +60,8 @@ export const useObjects = <T extends object>(
 
   const updateObject = async (id: number | string, object: T) => {
     try {
-      const updatedObject = await service.update(Number(id), object);
+      // Ya no convertimos el ID a número
+      const updatedObject = await service.update(id, object);
       setObjects(current => 
         current.map(obj => transformId(obj) === id ? updatedObject : obj)
       );
@@ -73,7 +74,8 @@ export const useObjects = <T extends object>(
 
   const deleteObject = async (id: number | string) => {
     try {
-      await service.delete(Number(id));
+      // Ya no convertimos el ID a número
+      await service.delete(id);
       setObjects(current => 
         current.filter(obj => transformId(obj) !== id)
       );
@@ -137,7 +139,8 @@ export const useObjectDetails = <T extends object>(
 
     setLoading(true);
     try {
-      const data = await service.getById(Number(id));
+      // Ya no convertimos el ID a número
+      const data = await service.getById(id);
       setObject(data);
       onSuccess?.(data);
     } catch (err) {
@@ -152,7 +155,8 @@ export const useObjectDetails = <T extends object>(
     if (!id) return null;
     
     try {
-      const result = await service.update(Number(id), updatedObject);
+      // Ya no convertimos el ID a número
+      const result = await service.update(id, updatedObject);
       setObject(result);
       return result;
     } catch (err) {

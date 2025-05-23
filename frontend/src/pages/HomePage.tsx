@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { empleadoService } from '../services/EmpleadoService';
+import { cultureService } from '../services/CultureService';
 
 const HomePage: React.FC = () => {
   const [connectionTest, setConnectionTest] = useState('Probando conexión...');
@@ -10,7 +10,7 @@ const HomePage: React.FC = () => {
     const testApiConnection = async () => {
       try {
         setLoading(true);
-        const data = await empleadoService.testConnection();
+        const data = await cultureService.testConnection();
         setConnectionTest(`Conexión exitosa. Datos recibidos: ${data.length} registros`);
       } catch (error) {
         setConnectionTest('Error de conexión con la API');

@@ -52,14 +52,14 @@ const Navbar: React.FC = () => {
                 </Link>
 
                 <Link 
-                  to="/empleados" 
+                  to="/cultures" 
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                    isActive('/empleados') 
+                    isActive('/cultures') 
                       ? (scrolled ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-900 text-white') 
                       : (scrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-gray-300 hover:bg-gray-700 hover:text-white')
                   }`}
                 >
-                  Empleados
+                  Culturas
                 </Link>
               </div>
             </div>
@@ -76,7 +76,7 @@ const Navbar: React.FC = () => {
               } focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white`}
               aria-expanded="false"
             >
-              <span className="sr-only">Abrir menu principal</span>
+              <span className="sr-only">Abrir menú principal</span>
               {isOpen ? (
                 <svg 
                   className="block w-6 h-6" 
@@ -105,7 +105,7 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile menu, show/hide based on menu state */}
+      {/* Mobile menu */}
       <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
         <div className={`px-2 pt-2 pb-3 space-y-1 sm:px-3 ${scrolled ? 'bg-white' : 'bg-gray-800'}`}>
           <Link 
@@ -121,15 +121,15 @@ const Navbar: React.FC = () => {
           </Link>
 
           <Link 
-            to="/empleados" 
+            to="/cultures" 
             className={`block px-3 py-2 rounded-md text-base font-medium ${
-              isActive('/empleados') 
+              isActive('/cultures') 
                 ? (scrolled ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-900 text-white') 
                 : (scrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-gray-300 hover:bg-gray-700 hover:text-white')
             }`}
             onClick={() => setIsOpen(false)}
           >
-            Empleados
+            Culturas
           </Link>
         </div>
       </div>

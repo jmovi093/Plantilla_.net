@@ -1,20 +1,21 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import NotFoundPage from './pages/NotFoundPage';
-import EmpleadoList from './components/EmpleadoList';
-import EmpleadoDetails from './pages/EmpleadoDetails';
-import EmpleadoCreate from './pages/EmpleadoCreate';
-import EmpleadoEdit from './pages/EmpleadoEdit';
+import CultureList from './components/CultureList';
+import CultureDetails from './pages/CultureDetails';
+import CultureCreate from './pages/CultureCreate';
+import CultureEdit from './pages/CultureEdit';
 
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/empleados" element={<EmpleadoList />} />
-      <Route path="/empleados/details/:id" element={<EmpleadoDetails />} />
-      <Route path="/empleados/create" element={<EmpleadoCreate />} />
-      <Route path="/empleados/edit/:id" element={<EmpleadoEdit />} />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/cultures" element={<CultureList />} />
+      <Route path="/cultures/details/:id" element={<CultureDetails />} />
+      <Route path="/cultures/create" element={<CultureCreate />} />
+      <Route path="/cultures/edit/:id" element={<CultureEdit />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
