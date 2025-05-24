@@ -1,22 +1,48 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import NotFoundPage from './pages/NotFoundPage';
-import CultureList from './components/CultureList';
-import CultureDetails from './pages/CultureDetails';
-import CultureCreate from './pages/CultureCreate';
-import CultureEdit from './pages/CultureEdit';
+import DepartmentsPage from './pages/DepartmentsPage';
+import PrivateRoute from './components/PrivateRoute';
+import MainLayout from './layouts/MainLayout';
 
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
+      {/* Rutas sin layout (pantalla completa) */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+
+      {/* Rutas con layout (navegación + footer) */}
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/cultures" element={<CultureList />} />
-      <Route path="/cultures/details/:id" element={<CultureDetails />} />
-      <Route path="/cultures/create" element={<CultureCreate />} />
-      <Route path="/cultures/edit/:id" element={<CultureEdit />} />
-      <Route path="*" element={<NotFoundPage />} />
+      <Route
+        path="/dashboard"
+        element={
+          <MainLayout>
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          </MainLayout>
+        }
+      />
+      <Route path="/departments" element={
+        <MainLayout>
+          <PrivateRoute>
+            <DepartmentsPage />
+          </PrivateRoute>
+        </MainLayout>
+      }
+      />
+      <Route
+        path="*"
+        element={
+          <MainLayout>
+            <NotFoundPage />
+          </MainLayout>
+        }
+      />
     </Routes>
   );
 };

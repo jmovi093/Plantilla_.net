@@ -1,3 +1,4 @@
+// services/base.service.ts
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 export class BaseService<T> {
@@ -9,9 +10,39 @@ export class BaseService<T> {
     this.http = axios.create({
       baseURL: baseURL,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'ApiKey': '12345' // Agregamos la ApiKey aquí también
       }
     });
+
+    // Interceptor para agregar el token a las requests
+    this.http.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
+    // Interceptor para manejar errores de autorización
+    this.http.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          // Token expirado o inválido
+          localStorage.removeItem('token');
+          localStorage.removeItem('userData');
+          // Redireccionar al login si es necesario
+          window.location.href = '/login';
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   async getAll(): Promise<T[]> {
@@ -20,7 +51,6 @@ export class BaseService<T> {
   }
 
   async getById(id: number | string): Promise<T> {
-    // Formatear el ID si es una cadena de texto (como códigos de país)
     const formattedId = this.formatId(id);
     const response = await this.http.get<T>(`${this.endpoint}/${formattedId}`);
     return response.data;
@@ -32,13 +62,11 @@ export class BaseService<T> {
   }
 
   async update(id: number | string, data: T): Promise<T> {
-    // Modificado: Usar el endpoint sin ID para PUT requests
     const response = await this.http.put<T>(this.endpoint, data);
     return response.data;
   }
 
   async delete(id: number | string): Promise<void> {
-    // Formatear el ID si es una cadena de texto
     const formattedId = this.formatId(id);
     await this.http.delete(`${this.endpoint}/${formattedId}`);
   }
@@ -48,28 +76,18 @@ export class BaseService<T> {
     return response.data;
   }
 
-  /**
-   * Formatea el ID según las necesidades del API.
-   * Si es un string, lo rellena con espacios hasta alcanzar 6 caracteres.
-   * Esto es necesario porque el backend espera IDs con padding de espacios.
-   */
   protected formatId(id: number | string): string {
     if (typeof id === 'number') {
       return id.toString();
     }
     
-    // Para cualquier string, rellenar con espacios hasta llegar a 6 caracteres
     if (typeof id === 'string') {
-      // Si el string es más largo que 6 caracteres, no hacemos padding
       if (id.length >= 6) {
         return id;
       }
-      // Si no, rellenamos con espacios hasta 6 caracteres
       return id.padEnd(6, ' ');
     }
     
-    // En caso de que id no sea ni number ni string (lo cual no debería ocurrir por el tipo del parámetro)
-    // pero TypeScript no puede inferir esto automáticamente
     return String(id);
   }
 }
